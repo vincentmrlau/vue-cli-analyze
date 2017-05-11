@@ -15,22 +15,29 @@ var env = process.env.NODE_ENV === 'testing'
 
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
+    //使用utils 里面配置好的utils
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
       extract: true
     })
   },
+  // 是否使用#suorce-map,生成一个map文件
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
+    //输出的目录
     path: config.build.assetsRoot,
+    //输出的文件名
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
+    //非入口的文件命名规则
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
+    // 配置全局标识
     new webpack.DefinePlugin({
       'process.env': env
     }),
+    //压缩文件
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false

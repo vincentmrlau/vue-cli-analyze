@@ -1,3 +1,4 @@
+//utils 里面配置上了loader等
 var utils = require('./utils')
 var webpack = require('webpack')
 var config = require('../config')
@@ -22,13 +23,16 @@ module.exports = merge(baseWebpackConfig, {
       'process.env': config.dev.env
     }),
     // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
+    // 只重载当前模块
     new webpack.HotModuleReplacementPlugin(),
+    // 页面报错不阻塞
     new webpack.NoEmitOnErrorsPlugin(),
+    //把生成后的代码注入index.html中
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: 'index.html',
-      inject: true
+      filename: 'index.html',// 生成的文件名
+      template: 'index.html',// 入口模板
+      inject: true // 注入到body的尾部
     }),
     new FriendlyErrorsPlugin()
   ]
