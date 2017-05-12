@@ -40,14 +40,18 @@ var webpackConfig = merge(baseWebpackConfig, {
     //压缩文件
     new webpack.optimize.UglifyJsPlugin({
       compress: {
+        //不显示警告
         warnings: false
       },
       sourceMap: true
     }),
+    //将css文件分离出来
     // extract css into its own file
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css')
     }),
+
+    //压缩提出出来的css，并解决分离出来的js的重复问题（多个文件引入同一个css）
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
     new OptimizeCSSPlugin({
@@ -55,28 +59,39 @@ var webpackConfig = merge(baseWebpackConfig, {
         safe: true
       }
     }),
+
+    //生成html文件的插件，引入处理好的js和css
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
+      //生成的文件名
       filename: process.env.NODE_ENV === 'testing'
         ? 'index.html'
         : config.build.index,
+      //依赖的模板
       template: 'index.html',
+      //注入到body的底部
       inject: true,
       minify: {
+        //删除html中的注释代码
         removeComments: true,
+        //删除空白符
         collapseWhitespace: true,
+        //删除引号
         removeAttributeQuotes: true
         // more options:
         // https://github.com/kangax/html-minifier#options-quick-reference
       },
+      //按dependency的顺序引入
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
     }),
+    //把依赖分离开来
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
+      //公共模块被使用的最小次数
       minChunks: function (module, count) {
         // any required modules inside node_modules are extracted to vendor
         return (

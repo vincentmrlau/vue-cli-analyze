@@ -7,6 +7,7 @@ var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 
+//入口文件中加入 热加载依赖代码
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
@@ -20,6 +21,7 @@ module.exports = merge(baseWebpackConfig, {
   devtool: '#cheap-module-eval-source-map',
   plugins: [
     new webpack.DefinePlugin({
+      //设置全局变量
       'process.env': config.dev.env
     }),
     // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
@@ -34,6 +36,7 @@ module.exports = merge(baseWebpackConfig, {
       template: 'index.html',// 入口模板
       inject: true // 注入到body的尾部
     }),
+    //友好的错误提示
     new FriendlyErrorsPlugin()
   ]
 })

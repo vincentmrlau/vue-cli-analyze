@@ -18,10 +18,12 @@ module.exports = {
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
+  //文件解析
   resolve: {
-    //自动补全的扩展名
+    //自动补全的扩展名,使导入的时不带扩展名
     extensions: ['.js', '.vue', '.json'],
     alias: {
+      //import或require的别名
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src')
     }
@@ -29,9 +31,11 @@ module.exports = {
   module: {
     rules: [
       {
+        //eslint 检查
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
         enforce: 'pre',
+        //src和test目录中的必须处理
         include: [resolve('src'), resolve('test')],
         options: {
           formatter: require('eslint-friendly-formatter')
@@ -40,6 +44,7 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
+        //vue-loader配置
         options: vueLoaderConfig
       },
       {
@@ -51,6 +56,7 @@ module.exports = {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
+          //小于10k的图片用base64
           limit: 10000,
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
